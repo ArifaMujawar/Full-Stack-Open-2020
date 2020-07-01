@@ -1,12 +1,12 @@
 import React from "react";
 
-import Part from './part.js';
+import Part from "./part.js";
 
-const Content = ({ part1, part2, part3 }) => (
+const Content = ({ parts }) => (
   <>
-    <Part part={part1}/>
-    <Part part={part2}/>
-    <Part part={part3}/>
+    {parts.map((part) => {
+      return <Part part={part} />;
+    })}
   </>
 );
 
