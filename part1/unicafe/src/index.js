@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 const App = () => {
@@ -22,21 +22,18 @@ const App = () => {
   };
   return (
     <div>
-    <h3>give feedback</h3>
+      <h3>give feedback</h3>
       <Feedback
         handleClickForNeutral={handleClickForNeutral}
         handleClickForBad={handleClickForBad}
         handleClickForGood={handleClickForGood}
       />
       <h3>statistics</h3>
-      <Statistics
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        all={good + neutral + bad}
-        average={(good + neutral + bad) / 3}
-        positive={(good / all) * 100}
-      />
+      {good > 0 || neutral > 0 || bad > 0 ? (
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      ) : (
+        <p>No feedback given</p>
+      )}
     </div>
   );
 };
@@ -47,30 +44,45 @@ const Feedback = ({
 }) => {
   return (
     <div>
-      <button onClick={handleClickForGood}>good</button>
-      <button onClick={handleClickForNeutral}>neutral</button>
-      <button onClick={handleClickForBad}>bad</button>
+      <Button onClick={handleClickForGood} text="good" />
+      <Button onClick={handleClickForNeutral} text="neutral" />
+      <Button onClick={handleClickForBad} text="bad" />
+    </div>
+  );
+};
+
+const Button = (props) => {
+  return (
+    <div>
+      <button onClick={props.onClick}>{props.text}</button>
+    </div>
+  );
+};
+
+const Statistic = (props) => {
+  return (
+    <div>
+      <p>
+        {props.text} {props.value}
+      </p>
     </div>
   );
 };
 
 const Statistics = (props) => {
-  if (props.all > 0) {
-    return (
-      <div>
-        <p>good {props.good}</p>
-        <p>neutral {props.neutral}</p>
-        <p>bad {props.bad}</p>
-        <p>all {props.all}</p>
-        <p>average {props.average}</p>
-        <p>positive {props.positive}%</p>
-      </div>
-    );
-  }
+  const all = props.good + props.neutral + props.bad;
   return (
     <div>
-   <p>No feedback given</p> 
+      <Statistic text="good" value={props.good} />
+      <Statistic text="neutral" value={props.neutral} />
+      <Statistic text="bad" value={props.bad} />
+      <Statistic text="all" value={all} />
+      <Statistic
+        text="average"
+        value={(props.good + props.neutral + props.bad) / 3}
+      />
+      <Statistic text="positive" value={(props.good / all) * 100} />
     </div>
-  )
+  );
 };
 ReactDOM.render(<App />, document.getElementById("root"));
