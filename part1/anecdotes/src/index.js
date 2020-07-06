@@ -2,33 +2,48 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 const App = (props) => {
- 
   const [votes, setVotes] = useState(0);
+  const [mostVotes, setMostVotes] = useState(0);
   const [selected, setSelected] = useState(0);
+  const [index, setIndex] = useState(0);
+
   useEffect(() => {
     setVotes(props.copy[0]);
   }, [props.copy]);
-  const handleNext = (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
+    let som = Math.max.apply(null, props.copy);
+    setMostVotes(som);
+    console.log('som is ',som);
+    setIndex(props.copy.indexOf(som));
+  }, [props.copy, votes]);
+
+ 
+  const handleNext = () => {
     const random = Math.floor(Math.random() * 6);
     setSelected(random);
     setVotes(props.copy[random]);
   };
-  const handleVote = (e) => {
-    e.preventDefault();
-
+  const handleVote = () => {
     props.copy[selected] += 1;
     setVotes(props.copy[selected]);
-    console.log("points array is ", props.copy);
-    console.log("selected index is ", selected);
   };
 
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <p>has {votes} votes</p>
+      <Helper
+        text="Anecdote of the day"
+        value={props.anecdotes[selected]}
+        votes={votes}
+      />
       <button onClick={handleVote}>vote</button>
-      <button onClick={handleNext}>next anecdotes</button>
+      <button onClick={handleNext}>next anecdote</button>
+
+      <Helper
+        text="Anecdote with most votes"
+        value={props.anecdotes[index]}
+        votes={mostVotes}
+      />
     </div>
   );
 };
@@ -44,6 +59,15 @@ const anecdotes = [
 const points = new Array(2, 5, 7, 9, 1, 4); //.fill(0);
 const copy = [...points];
 
+const Helper = (props) => {
+  return (
+    <div>
+      <h3>{props.text}</h3>
+      <p>{props.value}</p>
+      <p>has {props.votes} votes</p>
+    </div>
+  );
+};
 ReactDOM.render(
   <App anecdotes={anecdotes} copy={copy} />,
   document.getElementById("root")
