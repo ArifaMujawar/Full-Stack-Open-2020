@@ -14,7 +14,6 @@ const App = (props) => {
   useEffect(() => {
     let som = Math.max.apply(null, props.copy);
     setMostVotes(som);
-    console.log('som is ',som);
     setIndex(props.copy.indexOf(som));
   }, [props.copy, votes]);
 
