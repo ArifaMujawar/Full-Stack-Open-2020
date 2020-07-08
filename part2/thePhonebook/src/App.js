@@ -5,22 +5,22 @@ const App = () => {
   const [newName, setNewName] = useState("");
 
   const handleNewName = (e) => {
-    console.log(e.target.value);
     setNewName(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const temp = {
-      name: newName,
-    };
-    const ca = persons.concat(temp);
-    console.log(ca);
-    setPersons(ca);
-    setNewName("");
-    persons.forEach((person) => console.log(person));
+    if (newName.length > 0) {
+      if (persons.some((person) => person.name === newName)) {
+        alert(`${newName} is already added to phonebook`);
+        setNewName("");
+      } else {
+        setPersons(persons.concat({ name: newName }));
+        setNewName("");
+      }
+    }
   };
-  
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -35,7 +35,9 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person, i) => <p>{person.name}</p>)}
+      {persons.map((person, i) => (
+        <p key={i}>{person.name}</p>
+      ))}
     </div>
   );
 };
