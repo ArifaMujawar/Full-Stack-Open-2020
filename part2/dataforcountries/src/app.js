@@ -9,7 +9,6 @@ const App = () => {
   const [country, setCountry] = useState("");
 
   const handleCountryName = (e) => {
-    console.log(e.target.value);
     setCountry(e.target.value);
   };
 
