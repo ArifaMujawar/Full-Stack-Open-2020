@@ -66,6 +66,7 @@ const Statistic = (props) => {
 
 const Statistics = (props) => {
   const all = props.good + props.neutral + props.bad;
+  const average = (props.good + 0 - props.bad) / all;
   const positive = (props.good / all) * 100 + "%";
   return (
     <tbody>
@@ -84,7 +85,7 @@ const Statistics = (props) => {
       <tr>
         <Statistic
           text="average"
-          value={(props.good + props.neutral + props.bad) / 3}
+          value={average}
         />
       </tr>
       <tr>
