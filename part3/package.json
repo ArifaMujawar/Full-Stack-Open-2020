@@ -16,6 +16,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "json-parser": "^3.1.2",
-    "moment": "^2.27.0"
+   
   }
 }

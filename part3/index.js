@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
-const moment = require('moment');
-app.use(express.json())
+app.use(express.json());
 let persons = [
   {
     name: "Arto Hellas",
@@ -39,51 +38,48 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/info", (req, res) => {
-  const date = moment().format('LLLL  HH:MM:SS Z+2');;
-  console.log("date ", date);
+  const date = new Date();
   res.send(`Phonebook has info for ${persons.length} people <br/><br/>
    ${date}`);
 });
-app.get('/api/persons/:id',(req, res)=>{
-const id = Number(req.params.id)
-const person = persons.find(p=>p.id === id)
-if(person){
-  res.json(person)
-  }else{
-    res.status(404).end()
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find((p) => p.id === id);
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
   }
-})
-app.delete('/api/persons/:id', (req,res)=>{
-const id = Number(req.params.id)
-person =persons.filter(p=> p.id !== id)
-res.status(204).end()
+});
+app.delete("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  person = persons.filter((p) => p.id !== id);
+  res.status(204).end();
 });
 
-//working here
-app.post('/api/persons', (req,res)=>{ 
-const random = Math.floor(Math.random()*100) 
-console.log('random ', random);
-const body = req.body
-console.log('body ', body);
-if(!body.name || !body.number){
-return res.status(400).json({
-  error: 'name or number missing'
-})
-}else if(persons.some(p =>p.name.toLowerCase() ===body.name.toLowerCase())){
-  return res.status(400).json({
-    error: 'name already exists'
-  })
-}
-const data = {
- name:body.name,
- number:body.number,
-  id: random,
-}
-console.log('data is ', data);
-persons = persons.concat(data)
-res.json(data)
+app.post("/api/persons", (req, res) => {
+  const random = Math.floor(Math.random() * 100);
+  const body = req.body;
 
-})
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: "name or number missing",
+    });
+  } else if (
+    persons.some((p) => p.name.toLowerCase() === body.name.toLowerCase())
+  ) {
+    return res.status(400).json({
+      error: "name already exists",
+    });
+  }
+  const data = {
+    name: body.name,
+    number: body.number,
+    id: random,
+  };
+  persons = persons.concat(data);
+  res.json(data);
+});
 
 const PORT = 3002;
 app.listen(PORT, () => {
