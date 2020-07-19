@@ -29,12 +29,13 @@ let persons = [
     id: 5,
   },
 ];
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 
-// morgan.token('host', function(req, res) {
-//   return req.hostname;
-// });
-// morgan(':method :host :status :res[content-length] - :response-time ms');
+morgan.token('host', function(req, res) {
+ 
+  return JSON.stringify(req.body);
+});
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :host'));
 app.get("/", (req, res) => {
   res.send("<h1>Hello ohh world");
 });
