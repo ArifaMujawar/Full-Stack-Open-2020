@@ -27,11 +27,7 @@ let persons = [
     number: "39-23-6423122",
     id: 4,
   },
-  {
-    name: "Yusra",
-    number: "2389 23380",
-    id: 5,
-  },
+  
 ];
 //app.use(morgan('tiny'));
 
