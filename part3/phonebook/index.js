@@ -6,6 +6,8 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const { response } = require("express");
+
 
 
 // const Person = mongoose.model("Person", personSchema);
@@ -46,7 +48,7 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :host")
 );
 app.get("/", (req, res) => {
-  res.send("<h1>Hello ohh world");
+  res.send("<h1>Hello ohh world</h1>");
 });
 
 app.get("/api/persons", (req, res) => {
@@ -58,24 +60,56 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/info", (req, res) => {
+  console.log('within /info');
   const date = new Date();
-  res.send(`Phonebook has info for ${persons.length} people <br/><br/>
+  
+
+  Person.find({}).then((p) => {
+    
+   
+    res.send(`Phonebook has info for ${p.length} people <br/><br/>
    ${date}`);
+  
+  });
+  
 });
-app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((p) => p.id === id);
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
+app.get("/api/persons/:id", (req, res,next) => {
+  // const id = Number(req.params.id);
+  // const person = persons.find((p) => p.id === id);
+  // if (person) {
+  //   res.json(person);
+  // } else {
+  //   res.status(404).end();
+  // }
+  Person.findById(req.params.id).then(p=>{
+    if(p){
+      res.json(p)
+    }
+    else{
+      res.status(400).end()
+    }
+  }).catch(e => next(e))
+});
+app.delete("/api/persons/:id", (req, res,next) => {
+  // const id = Number(req.params.id);
+  // person = persons.filter((p) => p.id !== id);
+  // res.status(204).end();
+  Person.findByIdAndRemove(req.params.id).then(res=>{
+    res.status(204).end()
+  }).catch(e=>next(e))
+});
+
+app.put('/api/persons/:id', (req, res, next)=> {
+  const body = req.body
+  const person ={
+    name: body.name,
+    phoneNumber: body.phoneNumber
   }
-});
-app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  person = persons.filter((p) => p.id !== id);
-  res.status(204).end();
-});
+
+  Person.findByIdAndUpdate(req.params.id, person, {new:true}).then(updatedPerson =>{
+    res.json(updatedPerson)
+  }).catch(e=>next(e))
+})
 
 app.post("/api/persons", (req, res) => {
   // const random = Math.floor(Math.random() * 100);
@@ -107,6 +141,17 @@ app.post("/api/persons", (req, res) => {
   
 });
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
