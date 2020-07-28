@@ -19,6 +19,7 @@ const App = () => {
 
   useEffect(() => {
     dataService.getAll().then((response) => {
+      console.log('response ',response.data)
       setPersons(response.data);
     });
   }, [newName, number]);
@@ -78,6 +79,9 @@ const App = () => {
             }, 5000)
             setNewName("");
             setNumber("");
+          }).catch(error => {
+            // this is the way to access the error message
+            console.log(error.response.data)
           });
           
       }
