@@ -23,7 +23,7 @@ const Person = (props) => {
   };
   return (
     <div>
-      {props.personArray.map((person, i) => (
+    {props.personArray.map((person, i) => (
         <p key={i}>
           {person.name} {person.number}{" "}
           <button onClick={() => handleDelete(person.name, person.id)}>

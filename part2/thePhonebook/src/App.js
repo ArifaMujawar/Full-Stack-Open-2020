@@ -82,6 +82,12 @@ const App = () => {
           }).catch(error => {
             // this is the way to access the error message
             console.log(error.response.data)
+            .then(()=>{
+              setErrorMessage(`error.response.data`);
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 5000)
+            });
           });
           
       }
@@ -106,11 +112,11 @@ const App = () => {
       <Persons
         filterValue={filterValue}
         searchResults={searchResults}
-        persons={persons}
         setErrorMessage={setErrorMessage}
         setPersons={setPersons}
         persons={persons}
       />
+     
     </div>
   );
 };
