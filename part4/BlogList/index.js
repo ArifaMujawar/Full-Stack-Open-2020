@@ -4,8 +4,7 @@ const config = require('./utils/config')
 
 const logger = require('./utils/logger')
 
-// const mongoUrl = 'mongodb+srv://Admin:admin123@cluster0.dcvdw.mongodb.net/BlogList'
-// mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+
 
 const server = http.createServer(app)
 
