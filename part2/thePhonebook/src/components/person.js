@@ -17,6 +17,12 @@ const Person = (props) => {
         })
         .then((returnedData) => {
           props.setPersons(props.persons.filter((i) => i.name !== name));
+          props.setStatus('error');
+          props.setErrorMessage(
+            `Deleted ${name}`);
+          setTimeout(() => {
+            props.setErrorMessage(null);
+          }, 5000);
         });
     }
   };
