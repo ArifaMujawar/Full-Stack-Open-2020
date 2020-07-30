@@ -1,7 +1,7 @@
 import axios from 'axios';
 //to run locally
-//const baseUrl = 'http://localhost:3001/persons' 
-const baseUrl = '/api/persons'
+const baseUrl = 'http://localhost:3001/persons' 
+//const baseUrl = '/api/persons'
 const getAll = () => {
   return axios.get(baseUrl)
 }

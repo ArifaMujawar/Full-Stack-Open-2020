@@ -5,9 +5,9 @@ import dataService from "./services/dataService";
 import PersonForm from "./components/personForm";
 import Persons from "./components/persons";
 import Filter from "./components/filter";
-import Notification from './components/Notification';
+import Notification from "./components/Notification";
 
-import './App.css';
+import "./App.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -15,15 +15,21 @@ const App = () => {
   const [number, setNumber] = useState("");
   const [filterValue, setFilterValue] = useState("");
   const [searchResults, setSearchResults] = useState("");
-  const [errorMessage, setErrorMessage]= useState('');
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [status, setStatus] = useState("");
   useEffect(() => {
     dataService.getAll().then((response) => {
-      console.log('response ',response.data)
+      console.log("response ", response.data);
       setPersons(response.data);
     });
   }, [newName, number]);
 
+  useEffect(() => {
+    console.log("error message updated");
+  }, [errorMessage, status]);
+  const handleStatus = (s) => {
+    setStatus(s);
+  };
   const handleNewName = (e) => {
     setNewName(e.target.value);
   };
@@ -58,12 +64,15 @@ const App = () => {
             (p) => p.name.toLowerCase() === newName.toLowerCase()
           );
 
-          dataService.update(data.id, { name: newName, number: number }).then(()=>{
-            setErrorMessage(`Edited ${newName}`, 'success');
-            setTimeout(() => {
-              setErrorMessage(null)
-            }, 5000)
-          });
+          dataService
+            .update(data.id, { name: newName, number: number })
+            .then(() => {
+              setErrorMessage(`Edited ${newName}, success`);
+              setStatus("success");
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 5000);
+            });
         }
         setNewName("");
         setNumber("");
@@ -73,31 +82,39 @@ const App = () => {
           .create({ name: newName, number: number })
           .then((returnedData) => {
             setPersons(persons.concat(returnedData));
-            setErrorMessage(`Added ${newName}`, 'success');
+            setErrorMessage(`Added ${newName}, success`);
+            setStatus("success");
             setTimeout(() => {
-              setErrorMessage(null)
-            }, 5000)
+              setErrorMessage(null);
+            }, 5000);
             setNewName("");
             setNumber("");
-          }).catch(error => {
-            // this is the way to access the error message
-            console.log(error.response.data)
-            .then(()=>{
-              setErrorMessage(`error.response.data`);
-              setTimeout(() => {
-                setErrorMessage(null)
-              }, 5000)
-            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+            setErrorMessage(error.response.data, "error");
+            setStatus("error");
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
           });
-          
       }
+    } else {
+      console.log("missing name or number");
+      setStatus("error");
+      setErrorMessage("missing name or number, error");
+      
+      setTimeout(() => {
+        setErrorMessage(null);
+        setStatus(null);
+      }, 5000);
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      {errorMessage && <Notification message={errorMessage}/>}
+      {errorMessage && <Notification message={errorMessage} status={status} />}
       <Filter handleFilterName={handleFilterName} filterValue={filterValue} />
       <h3>Add a new </h3>
       <PersonForm
@@ -106,6 +123,7 @@ const App = () => {
         handleNumber={handleNumber}
         number={number}
         handleSubmit={handleSubmit}
+        
       />
 
       <h3>Numbers</h3>
@@ -115,8 +133,8 @@ const App = () => {
         setErrorMessage={setErrorMessage}
         setPersons={setPersons}
         persons={persons}
+        setStatus={handleStatus}
       />
-     
     </div>
   );
 };

@@ -8,11 +8,13 @@ const Persons = (props) => {
         <Person personArray={props.searchResults} setErrorMessage={props.setErrorMessage}
         setPersons={props.setPersons}
         persons={props.persons}
+        setStatus={props.setStatus}
         />
       ) : (
         <Person personArray={props.persons} setErrorMessage={props.setErrorMessage}
         setPersons={props.setPersons}
         persons={props.persons}
+        setStatus={props.setStatus}
         />
       )}
     </div>

@@ -8,10 +8,9 @@ const Person = (props) => {
         .deletePerson(id)
         .catch((e) => {
           console.log(e);
+          props.setStatus('error');
           props.setErrorMessage(
-            `Information of ${name} has already been removed from server`,
-            "error"
-          );
+            `Information of ${name} has already been removed from server, error`);
           setTimeout(() => {
             props.setErrorMessage(null);
           }, 5000);

@@ -1,17 +1,17 @@
 import React from 'react';
 
 const Notification = ({message, status}) => {
-  
-  if(status === 'error'){
+  console.log('status value ', status);
+  if(status == "error"){
     return(
       <div className='error'>
-      {message}
+      {message} 
       </div>
     );
   }
 return(
   <div className='message'>
-  {message}
+  {message} 
   </div>
 );
 }
