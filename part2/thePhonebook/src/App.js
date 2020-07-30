@@ -91,8 +91,8 @@ const App = () => {
             setNumber("");
           })
           .catch((error) => {
-            console.log(error.response.data);
-            setErrorMessage(error.response.data, "error");
+            console.log(error.response.data.error);
+            setErrorMessage(error.response.data.error);
             setStatus("error");
             setTimeout(() => {
               setErrorMessage(null);
