@@ -65,11 +65,11 @@ const favoriteBlog = (blogs) => {
   mostLikes = blogs.reduce((prev, curr)=>{
     return (prev.likes > curr.likes) ? prev: curr
   });
-  //console.log(mostLikes)
+  return mostLikes
 };
 
 favoriteBlog(blogs)
-totalLikes(blogs)
+//totalLikes(blogs)
 
 module.exports = {
   totalLikes,

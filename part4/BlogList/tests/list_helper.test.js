@@ -45,16 +45,17 @@ describe("total likes", () => {
 
 describe("favoriteBlog", () => {
   let mostLikes = {
-    _id: "5a422aa71b54a676234d17f8",
-    title: "Go To Statement Considered Harmful",
-    author: "Edsger W. Dijkstra",
+    _id: "5a422ba71b54a676234d17fb",
+    title: "TDD harms architecture",
+    author: "Robert C. Martin",
     url:
-      "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 5,
+      "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    likes: 10,
     __v: 0,
   }
   test("returns blog with highest likes", () => {
-    const result = listHelper.favoriteBlog(listWithOneBlog)
+    const result = listHelper.favoriteBlog(listWithTwoBlogs)
+    console.log(mostLikes);
     expect(result).toEqual(mostLikes);
   });
 });
