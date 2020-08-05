@@ -55,7 +55,7 @@ describe("favoriteBlog", () => {
   }
   test("returns blog with highest likes", () => {
     const result = listHelper.favoriteBlog(listWithTwoBlogs)
-    console.log(mostLikes);
+    //console.log(mostLikes);
     expect(result).toEqual(mostLikes);
   });
 });
