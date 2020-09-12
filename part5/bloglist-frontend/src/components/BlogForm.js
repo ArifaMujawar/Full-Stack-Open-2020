@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import blogService from "../services/blogs";
 
-const BlogForm = ({setStatus, setErrorMessage}) => {
+const BlogForm = ({ setStatus, setErrorMessage, user }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -20,13 +20,18 @@ const BlogForm = ({setStatus, setErrorMessage}) => {
         title,
         author,
         url,
+        user
       };
+      console.log('OBJ', obj )
       try {
         const res = await blogService.create(obj);
         console.log("res", res);
         setStatus("success");
         setErrorMessage(`a new blog ${title} by ${author} added`);
         setTimeout(() => {
+          setTitle('');
+          setAuthor('');
+          setUrl('');
           setErrorMessage(null);
           setStatus(null);
         }, 3000);
@@ -52,6 +57,7 @@ const BlogForm = ({setStatus, setErrorMessage}) => {
         value={author}
         onChange={({ target }) => setAuthor(target.value)}
       />
+
       <p>url </p>
       <input
         type="text"

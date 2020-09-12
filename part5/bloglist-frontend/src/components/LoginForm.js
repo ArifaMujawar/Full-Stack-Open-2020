@@ -13,24 +13,27 @@ const LoginForm = ({setUser,setStatus,setErrorMessage}) => {
           setUser(user);
           blogService.setToken(user.token);
         }
-      }, []);
+      }, [setUser]);
 
     const handleLogin = async (event) => {
         event.preventDefault();
+        console.log('out')
         try {
+          console.log('in')
           const user = await loginService.login({
             username,
             password,
           });
+          console.log('user created is ', user)
           window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
           blogService.setToken(user.token);
           setUser(user);
           setUsername("");
           setPassword("");
-        } catch (exception) {
+        } catch (e) {
           setStatus("error");
           setErrorMessage("Wrong username or password");
-    
+          console.log(e)
           setTimeout(() => {
             setErrorMessage(null);
             setStatus(null);
