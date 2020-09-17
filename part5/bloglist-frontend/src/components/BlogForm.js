@@ -1,45 +1,45 @@
-import React, { useState } from "react";
-import blogService from "../services/blogs";
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
 const BlogForm = ({ setStatus, setErrorMessage, user }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const handleBlogCreation = async (e) => {
-    e.preventDefault();
-    if (title === "" || author === "" || url === "") {
-      setStatus("error");
-      setErrorMessage("Fill the form details");
+    e.preventDefault()
+    if (title === '' || author === '' || url === '') {
+      setStatus('error')
+      setErrorMessage('Fill the form details')
       setTimeout(() => {
-        setErrorMessage(null);
-        setStatus(null);
-      }, 3000);
+        setErrorMessage(null)
+        setStatus(null)
+      }, 3000)
     } else {
       const obj = {
         title,
         author,
         url,
         user
-      };
+      }
       console.log('OBJ', obj )
       try {
-        const res = await blogService.create(obj);
-        console.log("res", res);
-        setStatus("success");
-        setErrorMessage(`a new blog ${title} by ${author} added`);
+        const res = await blogService.create(obj)
+        console.log('res', res)
+        setStatus('success')
+        setErrorMessage(`a new blog ${title} by ${author} added`)
         setTimeout(() => {
-          setTitle('');
-          setAuthor('');
-          setUrl('');
-          setErrorMessage(null);
-          setStatus(null);
-        }, 3000);
+          setTitle('')
+          setAuthor('')
+          setUrl('')
+          setErrorMessage(null)
+          setStatus(null)
+        }, 3000)
       } catch (e) {
-        console.log(e);
+        console.log(e)
       }
     }
-  };
+  }
 
   return (
     <form onSubmit={handleBlogCreation}>
@@ -67,6 +67,6 @@ const BlogForm = ({ setStatus, setErrorMessage, user }) => {
       />
       <button type="submit">Create</button>
     </form>
-  );
-};
-export default BlogForm;
+  )
+}
+export default BlogForm

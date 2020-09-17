@@ -1,40 +1,41 @@
-import React, { useState, useEffect } from "react";
-import Blog from "./components/Blog";
+import React, { useState, useEffect } from 'react'
+import Blog from './components/Blog'
 
-import blogService from "./services/blogs";
+import blogService from './services/blogs'
 
-import Notification from "./components/Notification";
-import BlogForm from "./components/BlogForm";
-import LoginForm from "./components/LoginForm";
+import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 
-import "./App.css";
+import './App.css'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([])
 
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [user, setUser] = useState(null);
-  const [status, setStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [user, setUser] = useState(null)
+  const [status, setStatus] = useState('')
 
-  const [blogFormVisible, setBlogFormVisible] = useState(false);
+  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   useEffect(() => {
-    blogSetter();
-  }, [blogs]);
+    blogSetter()
+  }, [blogs])
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {}, [user])
   useEffect(() => {
-    console.log("error message updated");
-  }, [errorMessage, status]);
+    console.log('error message updated')
+  }, [errorMessage, status])
 
-  const hideWhenVisible = { display: blogFormVisible ? "none" : "" };
-  const showWhenVisible = { display: blogFormVisible ? "" : "none" };
+  const hideWhenVisible = { display: blogFormVisible ? 'none' : '' }
+  const showWhenVisible = { display: blogFormVisible ? '' : 'none' }
 
   const blogSetter = () => {
     return blogService
       .getAll()
-      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
-  };
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -49,12 +50,12 @@ const App = () => {
         <div>
           <p>{user.username} logged-in</p>
           <button
-            onClick={() => window.localStorage.removeItem("loggedBlogAppUser")}
+            onClick={() => window.localStorage.removeItem('loggedBlogAppUser')}
           >
             Logout
           </button>
           <div style={hideWhenVisible}>
-            {" "}
+            {' '}
             <button onClick={() => setBlogFormVisible(true)}>
               Create Blog
             </button>
@@ -66,7 +67,7 @@ const App = () => {
                 setErrorMessage={setErrorMessage}
                 user={user}
               />
-            }{" "}
+            }{' '}
             <button onClick={() => setBlogFormVisible(false)}>cancel</button>
           </div>
 
@@ -76,7 +77,7 @@ const App = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

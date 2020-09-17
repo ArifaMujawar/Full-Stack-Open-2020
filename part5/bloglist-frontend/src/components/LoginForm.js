@@ -1,48 +1,50 @@
-import React,{useState, useEffect} from "react";
-import loginService from "../services/login";
-import blogService from "../services/blogs";
+import React,{ useState, useEffect } from 'react'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const LoginForm = ({setUser,setStatus,setErrorMessage}) => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
 
-    useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
-        if (loggedUserJSON) {
-          const user = JSON.parse(loggedUserJSON);
-          setUser(user);
-          blogService.setToken(user.token);
-        }
-      }, [setUser]);
+const LoginForm = ({ setUser,setStatus,setErrorMessage }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
-        console.log('out')
-        try {
-          console.log('in')
-          const user = await loginService.login({
-            username,
-            password,
-          });
-          console.log('user created is ', user)
-          window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-          blogService.setToken(user.token);
-          setUser(user);
-          setUsername("");
-          setPassword("");
-        } catch (e) {
-          setStatus("error");
-          setErrorMessage("Wrong username or password");
-          console.log(e)
-          setTimeout(() => {
-            setErrorMessage(null);
-            setStatus(null);
-          }, 5000);
-        }
-        console.log("loggin in with ", username, password);
-      };
-    
-    
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [setUser])
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    console.log('out')
+    try {
+      console.log('in')
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      console.log('user created is ', user)
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (e) {
+      setStatus('error')
+      setErrorMessage('Wrong username or password')
+      console.log(e)
+      setTimeout(() => {
+        setErrorMessage(null)
+        setStatus(null)
+      }, 5000)
+    }
+    console.log('loggin in with ', username, password)
+  }
+
+
   return (
     <form onSubmit={handleLogin}>
       <div>
@@ -65,6 +67,11 @@ const LoginForm = ({setUser,setStatus,setErrorMessage}) => {
       </div>
       <button type="submit">login</button>
     </form>
-  );
-};
-export default LoginForm;
+  )
+}
+export default LoginForm
+LoginForm.propTypes ={
+  setUser:PropTypes.func.isRequired,
+  setStatus:PropTypes.func.isRequired,
+  setErrorMessage:PropTypes.func.isRequired
+}
